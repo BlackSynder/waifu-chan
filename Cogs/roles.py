@@ -26,7 +26,9 @@ class Roles:
         role = discord.utils.get(ctx.guild.roles, name=name)
         if role is None:
             role = await ctx.guild.create_role(name=name, color=discord.Color(int(color)), mentionable=True)
-        roles[role.name] = role.id
+        if role.name in roles:
+            await ctx.send("Dame dame, onii-chan! This role is already a waifu role!")
+        roles[role.name] = str(role.id)
         json.dump(roles, open("roles.json", "r+"), indent=4)
         with open("roles.json") as f:
             await WaifuChan().update_json(os.environ["ROLES_JSON"], json.load(f))
@@ -41,7 +43,7 @@ class Roles:
             return
         if role in ctx.author.roles:
             await ctx.send("B-but you have this role already!")
-        elif role.id not in roles.values():
+        elif str(role.id) not in roles.values():
             await ctx.send("Chotto! That isn't a waifu role!")
         else:
             await ctx.author.add_roles(role)
@@ -54,7 +56,7 @@ class Roles:
         roles = json.load(open("roles.json"))
         role_list = discord.Embed(description=f"You can assign these roles by typing `{ctx.prefix}role add <role_name>`")
         role_list.set_author(name="Waifu-chan")
-        role_list.add_field(name="Roles", value="\n".join([discord.utils.get(ctx.guild.roles, id=roles[r]).mention for r in roles]))
+        role_list.add_field(name="Roles", value="\n".join([discord.utils.get(ctx.guild.roles, id=str(roles[r])).mention for r in roles]))
         await ctx.send(embed=role_list)
 
 def setup(bot):
