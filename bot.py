@@ -46,7 +46,7 @@ class WaifuChan(Bot):
         print(self.user.id)
         print("~-~-~-~")
         print("Cogs loaded:")
-        await get_json(os.environ.get("ROLES_JSON"), "roles")
+        await self.get_json(os.environ.get("ROLES_JSON"), "roles")
         for ext in extensions:
             try:
                 self.load_extension(str(ext))
