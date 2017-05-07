@@ -29,7 +29,7 @@ class Roles:
         roles[role.name] = role.id
         json.dump(roles, open("roles.json", "r+"), indent=4)
         with open("roles.json") as f:
-            await WaifuChan.update_json(os.environ["ROLES_JSON"], json.load(f))
+            await WaifuChan().update_json(os.environ["ROLES_JSON"], json.load(f))
         await ctx.send(f"Yatta! New waifu role `{role.name}` has been added!")
 
     @role.command()
