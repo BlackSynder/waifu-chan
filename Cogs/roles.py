@@ -56,7 +56,7 @@ class Roles:
         roles = json.load(open("roles.json"))
         role_list = discord.Embed(description=f"You can assign these roles by typing `{ctx.prefix}role add <role_name>`")
         role_list.set_author(name="Waifu-chan")
-        role_list.add_field(name="Roles", value="\n".join([discord.utils.get(ctx.guild.roles, id=str(roles[r])).mention for r in roles]))
+        role_list.add_field(name="Roles", value="\n".join([discord.utils.get(ctx.guild.roles, id=int(roles[r])).mention for r in roles]))
         await ctx.send(embed=role_list)
 
 def setup(bot):
