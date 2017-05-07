@@ -1,0 +1,61 @@
+import discord
+from discord.ext import commands
+import json
+import sys, os
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from bot import WaifuChan
+
+class Roles:
+    def __init__(self, bot):
+        self.bot = bot
+
+    async def on_error(error, *args, **kwargs):
+        print(error)
+        print(args)
+        print(kwargs)
+
+    @commands.group()
+    async def role(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send(f"Gomen onii-san, thats not how you use that command >-<\nC-Can you try `{ctx.prefix}help`?")
+
+    @role.command()
+    @commands.has_permissions(manage_roles=True)
+    async def new(self, ctx, name, color=None):
+        roles = json.load(open("roles.json"))
+        role = discord.utils.get(ctx.guild.roles, name=name)
+        if role is None:
+            role = await ctx.guild.create_role(name=name, color=discord.Color(int(color)), mentionable=True)
+        roles[role.name] = role.id
+        json.dump(roles, open("roles.json", "r+"), indent=4)
+        with open("roles.json") as f:
+            await WaifuChan.update_json(os.environ["ROLES_JSON"], json.load(f))
+        await ctx.send(f"Yatta! New waifu role `{role.name}` has been added!")
+
+    @role.command()
+    async def add(self, ctx, name):
+        role = discord.utils.get(ctx.guild.roles, name=name)
+        roles = json.load(open("roles.json"))
+        if role is None:
+            await ctx.send("Gomen! This role doesn't exist. Did you write the name wrong, baka?")
+            return
+        if role in ctx.author.roles:
+            await ctx.send("B-but you have this role already!")
+        elif role.id not in roles.values():
+            await ctx.send("Chotto! That isn't a waifu role!")
+        else:
+            await ctx.author.add_roles(role)
+            await ctx.send(f"I did it onii-san! You now have `{role.name}`!")
+
+
+
+    @role.command(name="list")
+    async def _list(self, ctx):
+        roles = json.load(open("roles.json"))
+        role_list = discord.Embed(description=f"You can assign these roles by typing `{ctx.prefix}role add <role_name>`")
+        role_list.set_author(name="Waifu-chan")
+        role_list.add_field(name="Roles", value="\n".join([discord.utils.get(ctx.guild.roles, id=roles[r]).mention for r in roles]))
+        await ctx.send(embed=role_list)
+
+def setup(bot):
+    bot.add_cog(Roles(bot))
