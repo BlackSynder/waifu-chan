@@ -25,14 +25,14 @@ class Roles:
         roles = json.load(open("roles.json"))
         role = discord.utils.get(ctx.guild.roles, name=name)
         if role is None:
-            role = await ctx.guild.create_role(name=name, color=discord.Color(int(color)), mentionable=True)
+            role = await ctx.guild.create_role(name=name, color=discord.Color(int(color, 16)), mentionable=True)
         if role.name in roles:
             await ctx.send("Dame dame, onii-chan! This role is already a waifu role!")
             return
         roles[role.name] = str(role.id)
         json.dump(roles, open("roles.json", "r+"), indent=4)
         with open("roles.json") as f:
-            await WaifuChan().update_json(os.environ["ROLES_JSON"], json.load(f))
+            await ctx.bot.update_json(os.environ["ROLES_JSON"], json.load(f))
         await ctx.send(f"Yatta! New waifu role `{role.name}` has been added!")
 
     @role.command()
