@@ -37,7 +37,7 @@ class Roles:
 
     @role.command()
     async def add(self, ctx, *, name):
-        role = discord.utils.get(ctx.guild.roles, name=name)
+        role = discord.utils.find(lambda m: m.name.lower() == name.lower(), ctx.guild.roles)
         roles = json.load(open("roles.json"))
         if role is None:
             await ctx.send("Gomen! This role doesn't exist. Did you write the name wrong, baka?")
