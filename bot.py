@@ -3,10 +3,12 @@ import os
 import json
 import aiohttp
 import asyncio
+import logging
 
 ext_list = ["roles"]
 extensions = ["Cogs." + extension for extension in ext_list]
 token = os.environ.get("TOKEN")
+logging.basicConfig(level=logging.INFO)
 
 class WaifuChan(Bot):
     def __init__(self):
