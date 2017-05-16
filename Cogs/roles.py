@@ -26,6 +26,7 @@ class Roles:
         role = discord.utils.get(ctx.guild.roles, name=name)
         if role is None:
             role = await ctx.guild.create_role(name=name, color=discord.Color(int(color, 16)), mentionable=True)
+            await role.edit(reason="Adjust role position to fit other roles", position=21)
         if role.name in roles:
             await ctx.send("Dame dame, onii-chan! This role is already a waifu role!")
             return
