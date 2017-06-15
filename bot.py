@@ -16,20 +16,20 @@ class WaifuChan(Bot):
 
     async def get_json(self, json_id, file_name):
         async with aiohttp.ClientSession() as cs:
-               async with cs.get(f'https://jsonblob.com/api/jsonBlob/{json_id}') as resp:
-                   if resp.status != 200:
-                       raise RuntimeError('For some reason, it failed.')
-                   response = await resp.json()
-                   with open(file_name+".json", "w") as json_file:
-                       json.dump(response, json_file, indent=4)
-                       return response
+            async with cs.get(f'https://jsonblob.com/api/jsonBlob/{json_id}') as resp:
+                if resp.status != 200:
+                    raise RuntimeError('For some reason, it failed.')
+                response = await resp.json()
+                with open(file_name+".json", "w") as json_file:
+                    json.dump(response, json_file, indent=4)
+                    return response
 
     async def update_json(self, json_id, json_file):
         async with aiohttp.ClientSession() as cs:
-               async with cs.put(f'https://jsonblob.com/api/jsonBlob/{json_id}', data=json.dumps(json_file), headers = {'content-type': 'application/json'}) as resp:
-                   if resp.status != 200:
-                       raise RuntimeError('For some reason, it failed.')
-                   return await resp.json()
+            async with cs.put(f'https://jsonblob.com/api/jsonBlob/{json_id}', data=json.dumps(json_file), headers={'content-type': 'application/json'}) as resp:
+                if resp.status != 200:
+                    raise RuntimeError('For some reason, it failed.')
+                return await resp.json()
 
     def config(self, target):
         with open("config.json") as config_file:
