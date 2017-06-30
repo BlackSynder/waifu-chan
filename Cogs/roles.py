@@ -47,7 +47,7 @@ class Roles:
             return
         if role in ctx.author.roles:
             await ctx.send("B-but you have this role already!")
-        elif str(role.id) not in roles.values():
+        elif any(str(role.id) in role_values for role_values in roles.values()):
             await ctx.send("Chotto! That isn't a waifu role!")
         else:
             await ctx.author.add_roles(role)
