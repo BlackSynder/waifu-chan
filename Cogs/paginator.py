@@ -180,7 +180,7 @@ class Pages:
     def react_check(self, reaction, user):
         if user is None or user.id != self.author.id:
             return False
-        if not self.message == reaction.message:
+        if self.message != reaction.message:
             return False
 
         for (emoji, func) in self.reaction_emojis:
@@ -194,8 +194,9 @@ class Pages:
         await self.show_page(1, first=True)
 
         while self.paginating:
-            react = await self.bot.wait_for("reaction_add", check=self.react_check, timeout=120.0)
-            if react is None:
+            try:
+                react = await self.bot.wait_for("reaction_add", check=self.react_check, timeout=120.0)
+            except:
                 self.paginating = False
                 try:
                     await self.message.clear_reactions()
