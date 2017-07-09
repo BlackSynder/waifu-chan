@@ -177,22 +177,21 @@ class Pages:
         await self.message.delete()
         self.paginating = False
 
-    def react_check(self, reaction, user):
-        if user is None or user.id != self.author.id:
-            return False
-        if self.message != reaction.message:
-            return False
-
-        for (emoji, func) in self.reaction_emojis:
-            if reaction.emoji == emoji:
-                self.match = func
-                return True
-        return False
 
     async def paginate(self):
         """Actually paginate the entries and run the interactive loop if necessary."""
         await self.show_page(1, first=True)
+        def react_check(self, reaction, user):
+            if user is None or user.id != self.author.id:
+                return False
+            if self.message != reaction.message:
+                return False
 
+            for (emoji, func) in self.reaction_emojis:
+                if reaction.emoji == emoji:
+                    self.match = func
+                    return True
+            return False
         while self.paginating:
             try:
                 react = await self.bot.wait_for("reaction_add", check=self.react_check, timeout=120.0)
