@@ -194,7 +194,7 @@ class Pages:
             return False
         while self.paginating:
             try:
-                react = await self.bot.wait_for("reaction_add", check=self.react_check, timeout=120.0)
+                react = await self.bot.wait_for("reaction_add", check=react_check, timeout=120.0)
             except:
                 self.paginating = False
                 try:
