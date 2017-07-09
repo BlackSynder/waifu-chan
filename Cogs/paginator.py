@@ -181,7 +181,7 @@ class Pages:
     async def paginate(self):
         """Actually paginate the entries and run the interactive loop if necessary."""
         await self.show_page(1, first=True)
-        def react_check(self, reaction, user):
+        def react_check(reaction, user):
             if user is None or user.id != self.author.id:
                 return False
             if self.message != reaction.message:
