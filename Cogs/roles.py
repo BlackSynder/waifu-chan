@@ -3,6 +3,7 @@ import logging
 from discord.ext import commands
 import json
 import sys, os
+from .utils.paginator import Pages
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from bot import WaifuChan
 
@@ -58,10 +59,17 @@ class Roles:
     @role.command(name="list")
     async def _list(self, ctx):
         roles = json.load(open("roles.json"))
-        role_list = discord.Embed(description=f"You can assign these roles by typing `{ctx.prefix}role add <role_name>`")
-        role_list.set_author(name="Waifu-chan")
-        role_list.add_field(name="Roles", value="\n".join([f"{discord.utils.get(ctx.guild.roles, id=int(roles[r][0])).mention}\n    {roles[r][1]}" for r in roles]))
-        await ctx.send(embed=role_list)
+        # role_list = discord.Embed(description=f"You can assign these roles by typing `{ctx.prefix}role add <role_name>`")
+        # role_list.set_author(name="Waifu-chan")
+        list_of_entries = [f"{discord.utils.get(ctx.guild.roles, id=int(roles[r][0])).mention}\n    {roles[r][1]}" for r in roles]
+        try:
+            p = Pages(self.bot, message=ctx.message, entries=list_of_entries)
+            p.embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            await p.paginate()
+        except Exception as e:
+            await ctx.send(e)
+        # role_list.add_field(name="Roles", value="\n".join([f"{discord.utils.get(ctx.guild.roles, id=int(roles[r][0])).mention}\n    {roles[r][1]}" for r in roles]))
+        # await ctx.send(embed=role_list)
 
 def setup(bot):
     bot.add_cog(Roles(bot))
