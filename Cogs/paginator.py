@@ -195,7 +195,7 @@ class Pages:
         while self.paginating:
             try:
                 react = await self.bot.wait_for("reaction_add", check=react_check, timeout=120.0)
-            except:
+            except asyncio.TimeoutError:
                 self.paginating = False
                 try:
                     await self.message.clear_reactions()
