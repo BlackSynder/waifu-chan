@@ -100,7 +100,7 @@ class Pages:
                 # it from the default set
                 continue
 
-            await self.message.add_reacion(reaction)
+            await self.message.add_reaction(reaction)
 
     async def checked_show_page(self, page):
         if page != 0 and page <= self.maximum_pages:
