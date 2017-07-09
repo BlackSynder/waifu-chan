@@ -184,7 +184,7 @@ class Pages:
         def react_check(reaction, user):
             if user is None or user.id != self.author.id:
                 return False
-            if self.message != reaction.message:
+            if self.message.id != reaction.message.id:
                 return False
 
             for (emoji, func) in self.reaction_emojis:
