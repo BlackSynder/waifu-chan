@@ -205,7 +205,7 @@ class Pages:
                     break
 
             try:
-                await self.message.remove_reaction(react.emoji, react.user)
+                await self.message.remove_reaction(react.reaction, react.user)
             except:
                 pass # can't remove it so don't bother doing so
 
