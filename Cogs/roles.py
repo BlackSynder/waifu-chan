@@ -65,7 +65,7 @@ class Roles:
         list_of_entries = [f"{discord.utils.get(ctx.guild.roles, id=int(roles[r][0])).mention}\n    {roles[r][1]}" for r in roles]
         try:
             p = Pages(self.bot, message=ctx.message, entries=list_of_entries)
-            p.embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            p.embed.set_author(name=ctx.bot.user.display_name, icon_url=ctx.bot.user.avatar_url)
             await p.paginate()
         except Exception as e:
             await ctx.send(e)
