@@ -205,7 +205,7 @@ class Pages:
                     break
 
             try:
-                await self.message.remove_reaction(react[0], react.[1])
+                await self.message.remove_reaction(react[0], react[1])
             except:
                 pass # can't remove it so don't bother doing so
 
