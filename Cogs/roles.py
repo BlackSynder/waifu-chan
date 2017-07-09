@@ -3,16 +3,17 @@ import logging
 from discord.ext import commands
 import json
 import sys, os
-from .utils.paginator import Pages
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from bot import WaifuChan
+from paginator import Pages
+
 
 class Roles:
     def __init__(self, bot):
         self.bot = bot
         logging.basicConfig(level=logging.INFO)
 
-    async def on_error(error, *args, **kwargs):
+    async def on_error(self, error, *args, **kwargs):
         print(error)
         print(args)
         print(kwargs)
