@@ -62,7 +62,7 @@ class Roles:
     @role.command(name="list")
     async def _list(self, ctx):
         roles = self.bot.roles
-        entries = [f"{discord.utils.get(ctx.guild.roles, id=r['id']).mention}\n    {r['source']}" for r in roles]
+        entries = [f"{discord.utils.get(ctx.guild.roles, id=roles[r]['id']).mention}\n    {roles[r]['source']}" for r in roles]
 
         try:
             p = Pages(self.bot, message=ctx.message, entries=entries)
