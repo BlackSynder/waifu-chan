@@ -1,1 +1,1 @@
-worker: python Cogs/roles.py
+worker: python cogs/roles.py
