@@ -10,6 +10,7 @@ extensions = ["cogs." + extension for extension in ext_list]
 token = os.environ.get("TOKEN")
 logging.basicConfig(level=logging.INFO)
 
+
 class WaifuChan(Bot):
     def __init__(self):
         super().__init__(command_prefix="w!", description="Waifu Bot for the KKK")
@@ -28,7 +29,7 @@ class WaifuChan(Bot):
         query = """SELECT * FROM roles"""
         async with self.pool.acquire() as conn:
             values = await conn.fetch(query)
-            self.roles = {val["name"]: {"id":val["id"], "source":val["source"]} for val in values}
+            self.roles = {val["name"]: {"id": val["id"], "source": val["source"]} for val in values}
         for ext in extensions:
             try:
                 self.load_extension(str(ext))
@@ -38,5 +39,6 @@ class WaifuChan(Bot):
                 exc = '{}: {}'.format(type(e).__name__, e)
                 print(f'Failed to load extension {ext}\n{exc}')
         print("~-~-~-~")
+
 
 WaifuChan().run(token)

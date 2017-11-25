@@ -1,4 +1,3 @@
-import json
 import logging
 
 import discord
@@ -19,12 +18,14 @@ class Roles:
 
     @commands.group()
     async def role(self, ctx):
+        """Add or create Waifu roles"""
         if ctx.invoked_subcommand is None:
             await ctx.send(f"Gomen onii-san, thats not how you use this command >-<\nC-Can you try `{ctx.prefix}help`?")
 
     @role.command()
     @commands.has_permissions(manage_roles=True)
     async def new(self, ctx, name, source, color=None):
+        """Create a new Waifu role"""
         roles = self.bot.roles
         role = discord.utils.get(ctx.guild.roles, name=name)
 
@@ -43,26 +44,42 @@ class Roles:
 
     @role.command()
     async def add(self, ctx, *, name):
+        """Add a Waifu role to yourself"""
         role = discord.utils.find(lambda m: m.name.lower() == name.lower(), ctx.guild.roles)
         roles = self.bot.roles
 
         if role is None:
             await ctx.send("Gomen! This role doesn't exist. Did you write the name wrong, baka?")
-            return
-        if role in ctx.author.roles:
+        elif role in ctx.author.roles:
             await ctx.send("B-but you have this role already!")
-        elif not role.name in roles:
+        elif role.name not in roles:
             await ctx.send("Chotto! That isn't a waifu role!")
         else:
             await ctx.author.add_roles(role)
             await ctx.send(f"I did it onii-san! You now have `{role.name}`!")
 
+    @role.command()
+    async def remove(self, ctx, *, name):
+        """Remove a Waifu role from yourself"""
+        role = discord.utils.find(lambda m: m.name.lower() == name.lower(), ctx.guild.roles)
+        roles = self.bot.roles
 
+        if role is None:
+            await ctx.send("Gomen! This role doesn't exist. Did you write the name wrong, baka?")
+        elif role.name not in roles:
+            await ctx.send("Chotto! That isn't a waifu role!")
+        elif role not in ctx.author.roles:
+            await ctx.send("You don't have that role! Baka!")
+        else:
+            await ctx.author.remove_roles(role)
+            await ctx.send(f"I did it onii-san! You no longer have `{role.name}`!")
 
     @role.command(name="list")
     async def _list(self, ctx):
+        """List all Waifu roles"""
         roles = self.bot.roles
-        entries = [f"{discord.utils.get(ctx.guild.roles, id=roles[r]['id']).mention}\n    {roles[r]['source']}" for r in roles]
+        entries = [f"{discord.utils.get(ctx.guild.roles, id=roles[r]['id']).mention}\n    \
+                  {roles[r]['source']}" for r in roles]
 
         try:
             p = Pages(self.bot, message=ctx.message, entries=entries)
@@ -70,6 +87,7 @@ class Roles:
             await p.paginate()
         except Exception as e:
             await ctx.send(e)
+
 
 def setup(bot):
     bot.add_cog(Roles(bot))
