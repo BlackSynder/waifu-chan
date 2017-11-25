@@ -3,6 +3,7 @@ import logging
 import ssl
 
 import asyncpg
+import discord
 from discord.ext.commands import Bot
 
 ext_list = ["roles"]
@@ -13,7 +14,8 @@ logging.basicConfig(level=logging.INFO)
 
 class WaifuChan(Bot):
     def __init__(self):
-        super().__init__(command_prefix="w!", description="Waifu Bot for the KKK")
+        game = discord.Game(name="s!help | syn help", type=2)
+        super().__init__(command_prefix="w!", description="Waifu Bot for the KKK", game=game)
 
     async def close(self):
         await self.pool.close()
