@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 class WaifuChan(Bot):
     def __init__(self):
-        game = discord.Game(name="s!help | syn help", type=2)
+        game = discord.Game(name="w!help", type=2)
         super().__init__(command_prefix="w!", description="Waifu Bot for the KKK", game=game)
 
     async def close(self):
