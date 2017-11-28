@@ -42,5 +42,11 @@ class WaifuChan(Bot):
                 print(f'Failed to load extension {ext}\n{exc}')
         print("~-~-~-~")
 
+    async def on_message(self, message):
+        ctx = await self.get_context(message)
+        if ctx.prefix is not None:
+            ctx.command = self.all_commands.get(ctx.invoked_with.lower())
+            await self.invoke(ctx)
+
 
 WaifuChan().run(token)
