@@ -78,7 +78,7 @@ class Roles:
     async def _list(self, ctx):
         """List all Waifu roles"""
         roles = self.bot.roles
-        entries = [f"{discord.utils.get(ctx.guild.roles, id=roles[r]['id']).mention}\n    \
+        entries = [f"{ctx.guild.get_role(roles[r]['id']).mention}\n    \
                   {roles[r]['source']}" for r in roles]
 
         try:
